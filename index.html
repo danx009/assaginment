@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>my Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #0f0f12;
+    color: #fff;
+    overflow-x: hidden;
+    transition: background 0.5s, color 0.5s;
+}
+
+#theme-toggle {
+    display: none;
+}
+
+:root {
+    --primary-color: #DA51DD;
+    --bg-color: #0f0f12;
+    --text-color: #fff;
+    --card-bg: rgba(255,255,255,0.05);
+    --hover-color: #7F3CED;
+}
+
+#theme-toggle:checked ~ body {
+    --bg-color: #fff;
+    --text-color: #111;
+    --card-bg: rgba(0,0,0,0.05);
+    --hover-color: #DA51DD;
+}
+
+#loader {
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: var(--bg-color);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index: 9999;
+    animation: fadeOut 3s forwards;
+}
+
+@keyframes fadeOut {
+    0% {opacity:1;}
+    90% {opacity:1;}
+    100% {opacity:0; display:none;}
+}
+
+.loader-dot {
+    width: 12px;
+    height: 12px;
+    margin: 5px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    animation: bounce 0.6s infinite alternate;
+}
+
+.loader-dot:nth-child(2){animation-delay:0.2s;}
+.loader-dot:nth-child(3){animation-delay:0.4s;}
+
+@keyframes bounce {
+    to {transform: translateY(-15px);}
+}
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 18px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    z-index: 99;
+    background: var(--bg-color);
+}
+
+header .logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary-color);
+}
+
+nav {
+    display: flex;
+    gap: 28px;
+}
+
+nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    position: relative;
+}
+
+nav a::after {
+    content: "";
+    width: 0%;
+    height: 2px;
+    background: var(--primary-color);
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    transition: 0.3s;
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+
+#menu-toggle {
+    display: none;
+}
+
+.menu-btn {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.menu-btn span {
+    width: 26px;
+    height: 3px;
+    background: var(--text-color);
+    transition: 0.3s;
+}
+
+
+@media (max-width: 850px) {
+
+    .menu-btn {
+        display: flex;
+        z-index: 999;
+    }
+
+    nav {
+        position: absolute;
+        top: -350px;
+        left: 0;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        background: rgba(12,12,18,0.95);
+        padding: 40px 0;
+        gap: 25px;
+        transition: 0.4s ease;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    #menu-toggle:checked ~ nav {
+        top: 70px;
+    }
+
+   
+    #menu-toggle:checked + .menu-btn span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+    #menu-toggle:checked + .menu-btn span:nth-child(2) {
+        opacity: 0;
+    }
+    #menu-toggle:checked + .menu-btn span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+}
+
+
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    padding: 0 10%;
+    margin-top: 80px;
+    background: linear-gradient(120deg, rgba(218,81,221,0.2), rgba(127,60,237,0.2));
+    background-attachment: fixed;
+}
+
+.hero-text {
+    flex: 1;
+    animation: fadeIn 2s ease forwards;
+}
+
+.hero-text h1 {
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    overflow: hidden; 
+    border-right: 4px solid var(--primary-color);
+    white-space: nowrap;
+    width: 0;
+    animation: typing 3s steps(30, end) forwards, blink 0.75s step-end infinite;
+}
+
+.hero-text p {
+    margin: 20px 0;
+    font-size: clamp(1rem, 2.3vw, 1.2rem);
+    opacity: 0.85;
+}
+
+.hero-spline {
+    flex: 1;
+    min-height: 380px;
+    animation: fadeIn 2s ease forwards;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 14px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #DA51DD, #7F3CED);
+    box-shadow: 0 0 20px rgba(218, 81, 221, 0.5);
+    color: #fff;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    box-shadow: 0 0 30px var(--primary-color);
+    transform: translateY(-3px);
+}
+
+
+section {
+    padding: 100px 10%;
+    animation: fadeInUp 1.5s ease forwards;
+    opacity: 0;
+}
+
+h2 {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    color: var(--primary-color);
+    margin-bottom: 12px;
+}
+
+.section-subtitle {
+    color: #bdbdbd;
+    margin-bottom: 40px;
+}
+
+
+.about-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 25px 30px;
+    border-radius: 12px;
+    line-height: 1.7;
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.about-card:hover {
+    box-shadow: 0 0 25px var(--primary-color);
+    transform: translateY(-5px);
+}
+
+/* SKILLS */
+.skills-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 20px;
+}
+
+.skill-box {
+    padding: 18px;
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.skill-box:hover {
+    box-shadow: 0 0 25px var(--primary-color);
+    transform: translateY(-5px);
+}
+
+
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+}
+
+.project-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.project-card:hover {
+    box-shadow: 0 0 30px var(--primary-color);
+    transform: translateY(-5px);
+}
+
+.project-card img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+
+.contact-box {
+    font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+    text-align: center;
+}
+
+.contact-box a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+footer {
+    padding: 25px;
+    text-align: center;
+    background: #0c0c0f;
+    opacity: 0.7;
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink {
+    50% { border-color: transparent; }
+}
+
+
+@keyframes fadeInUp {
+    0% {opacity:0; transform:translateY(40px);}
+    100% {opacity:1; transform:translateY(0);}
+}
+
+@keyframes fadeIn {
+    0% {opacity:0; transform:translateY(20px);}
+    100% {opacity:1; transform:translateY(0);}
+}
+
+
+@media (max-width: 900px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 120px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    header {
+        padding: 15px 20px;
+    }
+
+    section {
+        padding: 70px 6%;
+    }
+
+    .skills-container {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .project-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 400px) {
+    .skills-container {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="loader">
+    <div class="loader-dot"></div>
+    <div class="loader-dot"></div>
+    <div class="loader-dot"></div>
+</div>
+
+<input type="checkbox" id="theme-toggle">
+<label for="theme-toggle" style="position:fixed;top:20px;right:20px;cursor:pointer;color:var(--primary-color);font-weight:bold;z-index:1000;"></label>
+
+<header>
+    <div class="logo">Portfolio</div>
+
+    <input type="checkbox" id="menu-toggle">
+    <label for="menu-toggle" class="menu-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+    </label>
+
+    <nav>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+
+
+<div class="hero">
+    <div class="hero-text">
+        <h1>Daniel wondimagegn</h1>
+        <p>A passionate developer & designer building interactive experiences.</p>
+        <a href="#projects" class="btn">view project list</a>
+    </div>
+
+    <div class="hero-spline">
+        <spline-viewer
+            url="https://prod.spline.design/fJ2ptJKzT-sDkpfO/scene.splinecode"
+            background="rgba(218,81,221,0.2)">
+        </spline-viewer>
+    </div>
+</div>
+
+
+<section id="about">
+    <h2>About Me</h2>
+    <p class="section-subtitle">A little introduction</p>
+
+    <div class="about-card">
+        I'm a creative developer who blends beautiful UI with smooth functionality.
+        I enjoy building modern, animated, and immersive web experiences with clean, maintainable code.
+    </div>
+</section>
+
+
+<section id="skills">
+    <h2>Skills</h2>
+    <p class="section-subtitle">Technologies I work with</p>
+
+    <div class="skills-container">
+        <div class="skill-box">HTML</div>
+        <div class="skill-box">CSS</div>
+        <div class="skill-box">c++</div>
+        <div class="skill-box">python</div>
+    </div>
+</section>
+
+<section id="projects">
+    <h2>Projects</h2>
+    <p class="section-subtitle">Some things I've built</p>
+
+    <div class="project-grid">
+        <div class="project-card">
+            <img src="https://via.placeholder.com/400x200.png?text=Project+1" alt="Project 1">
+            <h3>Project One</h3>
+            <p>Audio and video media player.</p>
+        </div>
+
+        <div class="project-card">
+            <img src="https://via.placeholder.com/400x200.png?text=Project+2" alt="Project 2">
+            <h3>Project Two</h3>
+            <p>making a website for a company.</p>
+        </div>
+
+        <div class="project-card">
+            <img src="https://via.placeholder.com/400x200.png?text=Project+3" alt="Project 3">
+            <h3>Project Three</h3>
+            <p>A fully responsive portfolio design with dark theme.</p>
+        </div>
+    </div>
+</section>
+
+
+<section id="contact">
+    <h2>Contact</h2>
+    <div class="contact-box">
+        Email me at:
+        <br><br>
+        <a href="mailto:youremail@gmail.com">daniel77wondimagegn@gmail.com</a><br>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15769.024561627159!2d38.80126464938804!3d8.855729109180228!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b782fb927a81d%3A0x219bce895d0d3166!2sTulu%20Dimtu!5e0!3m2!1sen!2set!4v1763460641158!5m2!1sen!2set" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+       
+    </div>
+</section>
+
+<footer>
+    © 2025 Daniel.w — All Rights Reserved
+</footer>
+
+
+<script type="module" src="https://unpkg.com/@splinetool/viewer/build/spline-viewer.js"></script>
+</body>
+</html>
